@@ -14,41 +14,45 @@ namespace Excercise_1
 {
     public class SingleMission : IMission
     {
-        /*
-         * Function name: SingleMission
-         * parametrs: a function and name
-         * the operation of the function: it's constructor that initialize the function and the name
-         */
-        public SingleMission(myFunc a, string name)
-        {
-            Name = name;
-            func = a;
-        }
-        myFunc func;
-        public string Name
-        {
-            get;
-            set;
-        }
-        public string Type
-        {
-            get;
-            set;
-        }
+        private string funcName;
+
+        private myFunc function;
 
         public event EventHandler<double> OnCalculate;
+
+        // constructor
+        public SingleMission(myFunc func, string name)
+        {
+            function = func;
+            funcName = name;
+        }
+
+        public string Name
+        {
+            get
+            {
+                return funcName;
+            }
+            private set
+            {
+                funcName = value;
+            }
+        }
+
+        public string Type { get; } = "Single";
         /*
-         * Function name: Calculate
-         * parametrs: double value
-         * retuen value: double
-         * the operation of the function: calculation of the event
-         */
+        * Function name: Calculate
+        * parametrs: double value
+        * retuen value: double
+        * the operation of the function: calculation of the event
+        */
         public double Calculate(double value)
         {
-            double answer = func(value);
+            double answer = function(value);
             if (OnCalculate != null)
-                OnCalculate(this, answer);
+                OnCalculate.Invoke(this, answer);
             return answer;
         }
+
     }
 }

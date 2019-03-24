@@ -14,26 +14,43 @@ namespace Excercise_1
 {
     public class ComposedMission : IMission
     {
-        /*
-         * Function name: ComposedMission
-         * parametrs: a name
-         * the operation of the function: it's constructor that initialize the name
-         */
+        private string funcName;
+        public event EventHandler<double> OnCalculate;
+
+        //list of delegates
+        private List<myFunc> functions = new List<myFunc>();
+
+        //constructor that initialize the name
         public ComposedMission(string name)
         {
-            Name = name;
+            funcName = name;
         }
+
+
         public string Name
         {
-            get;
-            set;
+            get
+            {
+                return funcName;
+            }
+            set
+            {
+                funcName = value;
+            }
         }
-        public string Type
+
+        public string Type { get; } = "Composed";
+        /*
+       * Function name: Add
+       * parametrs: a function
+       * return value: an object of ComposedMission
+       * the operation of the function: add the function to a list and return the Composed object
+       */
+        public ComposedMission Add(myFunc a)
         {
-            get;
-            set;
+            functions.Add(a);
+            return this;
         }
-        public event EventHandler<double> OnCalculate;
         /*
          * Function name: Calculate
          * parametrs: a value
@@ -44,25 +61,15 @@ namespace Excercise_1
         public double Calculate(double value)
         {
             double answer = value;
-            foreach(var f in functions)
+            foreach (myFunc f in functions)
             {
                 answer = f(answer);
             }
-            if (OnCalculate != null)
-                OnCalculate(this, value);
+            if (OnCalculate != null) { 
+                OnCalculate.Invoke(this, answer);
+            }
             return answer;
         }
-        private List<myFunc> functions = new List<myFunc>();
-        /*
-        * Function name: Add
-        * parametrs: a function
-        * return value: an object of ComposedMission
-        * the operation of the function: add the function to a list and return the Composed object
-        */
-        public ComposedMission Add(myFunc a)
-        {
-            functions.Add(a);
-            return this;
-        }
+
     }
 }
