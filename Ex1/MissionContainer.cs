@@ -22,30 +22,30 @@ namespace Excercise_1
         * parametrs: an indexer
         * return value: an object of myFunc
         * the operation of the function: we search the function. if we found-return it.
-        * if it not found- in the catch we create a new one and add it to the list and then we return it.
+        * if it not found-we create a new one and add it to the list and then we return it.
         */
         public myFunc this[string key]
         {
             //search the function
             get
             {
-                myFunc e;
-                try
+                // running over the names of the functions
+                foreach (string name in functions.Keys)
                 {
-                    e = functions[key];
-                    if (e != null)
-                        return e;
+                    if (name == key)
+                    {
+                        return functions[name];
+                    }
                 }
-                //if it not found, we create a new one and add it to the list and then we return it.
-                catch (KeyNotFoundException) { }
-                e = val => val;
-                functions[key] = val => val;
-                return e;
+                // if the function doesn't exist, add the function to the functions dictionary
+                functions.Add(key, val => val);
+                return val => val;
             }
             set
             {
                 functions[key] = value;
             }
+
         }
         /*
         * Function name: getAllMissions
